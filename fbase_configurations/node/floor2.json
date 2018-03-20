@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "nodeID": {
+        "nodeID": "floor2"
+    },
+    "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvvAr0AdHwjKDO8jIsVZ6IlAnPRaULSl7AUupM4D7tboz2eEeF0WSsQ0maKKG0ie2gah/EYa/6Cb6BXOf0AgHM+FOUr4xHY2NQWX7WKor5C+eBaZ3KNMkAMNKexwHNlHWpUUC7sYswEBPxAdWm1UbUaMqnjL0eKDgkFoBtzDVQR4tZIqFG1v/APmSUPVr+umqDOg8Pr9/s5Grw+tA8KojTiZ1nQWkgWzKphmEJbKCsabrLE4OqPwi3qb1RrNQtN+2y7vAAbAXlYCBrWFzOdy/GiUleaxfcKsIfxK8p6ekCAEzUdbway5zMPfxaTdUpupo3TCZP8D91LR4rghDJhT5nwIDAQAB",
+    "encryptionAlgorithm": "RSA",
+    "machines": [
+        "m1"
+    ],
+    "messagePort": 6002,
+    "publisherPort": 7002,
+    "restPort": 8002,
+    "description": "Floor 2 of Garage 1"
+}

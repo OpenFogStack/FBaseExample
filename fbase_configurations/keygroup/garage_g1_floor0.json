@@ -1,0 +1,10 @@
+{
+  "keygroupID" : {
+    "app" : "garage",
+    "tenant" : "g1",
+    "group" : "floor0"
+  },
+  "encryptionSecret" : "floor0_secret",
+  "encryptionAlgorithm" : "AES",
+  "clients" : [ "generalClient" ]
+}

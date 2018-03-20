@@ -1,7 +1,7 @@
 # APP
 target/
 *.log
-local.properties
+naming_service_dataFolder/
 
 # MAC
 .DS_Store

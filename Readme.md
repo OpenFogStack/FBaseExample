@@ -7,8 +7,17 @@ This example depicts a working FBase setup. It is based on the *Smart Parking Ga
 
 The machines distribute their floor’s capacity to all other machines of the same parking garage. It is very important for the owner that no single point of failure exists, so the crash of a single machine on one floor should not stop the other machines from working. Furthermore, all data is permanently stored on a RAID inside the parking garage because the machines on each floor only have a limited storage capacity. With the permanently stored data, the parking garage owner can answer various questions, e.g., whether the garage has capacity problems in certain times of the year."*
 
-## Components
-
 ![Components for this Example](fig/components.png)
 
 All in all, the parking garage has three floors, as visualized above. Each floor node puts its own data into its own keygroup, in which the other floor nodes and the RAID node are listed as trigger nodes. Every datum emitted by a node simply contains the number of cars currently positioned on the belonging floor.
+
+## Usage
+
+Requires:
+* VirtualBox
+* Vagrant
+
+1. Run `vagrant up` to startup the naming service and the raid node. Note, that vagrant up will always pull the latest source code from GitHub and build a new jar.
+  * TODO RAID NODE startup
+1. Run `vagrant up floor0` to startup the ground level floor node. Do the same for floor1 and floor2
+  * TODO NODE startup

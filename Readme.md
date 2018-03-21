@@ -18,6 +18,7 @@ Requires:
 * Vagrant
 
 1. Run `vagrant up` to startup the naming service and the raid node. Note, that vagrant up will always pull the latest source code from GitHub and build a new jar.
-  * TODO RAID NODE startup
-1. Run `vagrant up floor0` to startup the ground level floor node. Do the same for floor1 and floor2
-  * TODO NODE startup
+  * The raid node vm will also compile the FBaseExampleClients jars
+1. Run `vagrant up floor0` to startup the ground level floor node. Do the same for floor1 and floor2. Note, that before each node is started, the Registration jar is used to register the node at the Naming Service.
+
+You can re-provision (re-run one the scripts defined in Vagrantfile with vagrant provision, e.g., `vagrant provision floor0 --provision-with run_client_floor0`).

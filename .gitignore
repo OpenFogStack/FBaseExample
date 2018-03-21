@@ -12,8 +12,8 @@ naming_service_dataFolder/
 .settings
 
 # JETBRAINS
-.idea/*
-!.idea/dictionaries/
+*/.idea/*
+!*/.idea/dictionaries/
 *.iml
 
 # Others

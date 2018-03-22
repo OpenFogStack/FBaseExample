@@ -17,8 +17,15 @@ Requires:
 * VirtualBox
 * Vagrant
 
-1. Run `vagrant up` to startup the naming service and the raid node. Note, that vagrant up will always pull the latest source code from GitHub and build a new jar.
-  * The raid node vm will also compile the FBaseExampleClients jars
-1. Run `vagrant up floor0` to startup the ground level floor node. Do the same for floor1 and floor2. Note, that before each node is started, the Registration jar is used to register the node at the Naming Service.
+1. Before startup, clear logs and remove naming service data folder.
+1. Run `vagrant up` to startup the naming service and the raid node. Note, that vagrant up will pull on the first startup the latest source code from GitHub and build a new jar.
+  * The raid node vm will also compile the FBaseExampleClients jars on first startup.
+  * The raid vm will use Registration.jar to register the other floor nodes at the naming service.
+1. Run `vagrant up floor0` to startup the ground level floor node. Do the same for floor1 and floor2 (you can do this in parallel).
+1. Create the keygroups (`vagrant provision raid --provision-with run_client_keygroupBootstrap`), make sure that it worked, otherwise run again.
+1. Tell every floor node to update its local keygroup config for each keygroup created (because otherwise they do not know about them, note: raid knows because of above already about keygroups): `vagrant provision floor0 --provision-with run_client_keygroupUpdateSubscriptions` (also for floor0, floor1, floor2)
+1. Start generation of records for floor nodes: `vagrant provision floor0 --provision-with run_client_addRecords` (also for floor0, floor1, floor2)
 
-You can re-provision (re-run one the scripts defined in Vagrantfile with vagrant provision, e.g., `vagrant provision floor0 --provision-with run_client_floor0`).
+You can re-provision (re-run one the scripts defined in Vagrantfile with vagrant provision, e.g., `vagrant provision raid --provision-with run_client_registration`).
+
+It is possible to kill a node (e.g., `vagrant halt floor0`) and start it up afterwards again. Do not forget to tell the node to update its local keygroups with the provisioner.

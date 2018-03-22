@@ -13,7 +13,7 @@ public class Registration {
 
 	private static Logger logger = Logger.getLogger(Registration.class.getName());
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 		String address = args[0];
 		int port = Integer.parseInt(args[1]);
 

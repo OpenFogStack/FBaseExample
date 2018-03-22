@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
 
   # code run on each instance
   config.vm.provision "shell", path: "vagrantfiles/setup_os_and_tools.sh"
-  config.vm.provision "shell", run: "always", path: "vagrantfiles/build_github_repo.sh", args: ["FBaseCommons", "https://github.com/OpenFogStack/FBaseCommons"]
+  config.vm.provision "shell", path: "vagrantfiles/build_github_repo.sh", args: ["FBaseCommons", "https://github.com/OpenFogStack/FBaseCommons"]
 
   # startup instances
   config.vm.define "namingService" do |ns|
@@ -44,33 +44,50 @@ Vagrant.configure("2") do |config|
         raid.vm.provision "shell", path: "vagrantfiles/build_github_repo.sh", args: ["FBase", "https://github.com/OpenFogStack/FBase"]
         raid.vm.provision "build_local_repo", type: "shell", path: "vagrantfiles/build_local_repo.sh", args:["/vagrant", "FBaseExampleClients"]
         raid.vm.provision "startup_jar", type: "shell", run: "always", path: "vagrantfiles/startup_jar.sh", args:["/home/vagrant/FBase/target/fbase-0.0.1-SNAPSHOT-jar-with-dependencies.jar", "/vagrant/fbase_configurations/node/raid.properties", "/vagrant/logs/raid.log"]
+        # register other nodes at naming service (can do this safely on each startup)
+        config.vm.provision "shell", inline: "echo Sleeping 10seconds to let the raid node startup."
+        config.vm.provision "shell", inline: "sleep 10s"
+        raid.vm.provision "run_client_registration", type: "shell", run: "always", path: "vagrantfiles/run_client.sh", args:["Registration.jar", "192.168.0.100", "8099", "/vagrant/fbase_configurations/node/floor0.json /vagrant/fbase_configurations/node/floor1.json /vagrant/fbase_configurations/node/floor2.json"]
+        # create keygroups and add replica and trigger nodes
+        raid.vm.provision "run_client_keygroupBootstrap", type: "shell", run: "never", path: "vagrantfiles/run_client.sh", args:["KeygroupBootstrap.jar", "192.168.0.100", "8099", "/vagrant/fbase_configurations/keygroup/garage_g1_floor0.json /vagrant/fbase_configurations/keygroup/garage_g1_floor1.json /vagrant/fbase_configurations/keygroup/garage_g1_floor2.json"]
+        # update subscriptions
+        raid.vm.provision "run_client_keygroupUpdateSubscriptions", type: "shell", run: "never", path: "vagrantfiles/run_client.sh", args:["KeygroupUpdateSubscriptions.jar", "192.168.0.100", "8099", "garage/g1/floor0 garage/g1/floor1 garage/g1/floor2"]
   end
 
-  config.vm.define "floor0", autostart: false do |floor0|
+  config.vm.define "floor0", autostart: true do |floor0|
         floor0.vm.box = "ubuntu/trusty64"
         floor0.vm.network "private_network", ip: "192.168.0.50", bridge: "en0: WLAN (AirPort)"
 
         floor0.vm.provision "shell", path: "vagrantfiles/build_github_repo.sh", args: ["FBase", "https://github.com/OpenFogStack/FBase"]
-        floor0.vm.provision "run_client_floor0", type: "shell", run: "always", path: "vagrantfiles/run_client.sh", args:["Registration.jar", "192.168.0.100", "8099", "/vagrant/fbase_configurations/node/floor0.json"]
         floor0.vm.provision "startup_jar", type: "shell", run: "always", path: "vagrantfiles/startup_jar.sh", args:["/home/vagrant/FBase/target/fbase-0.0.1-SNAPSHOT-jar-with-dependencies.jar", "/vagrant/fbase_configurations/node/floor0.properties", "/vagrant/logs/floor0.log"]
+        # update subscriptions
+        floor0.vm.provision "run_client_keygroupUpdateSubscriptions", type: "shell", run: "never", path: "vagrantfiles/run_client.sh", args:["KeygroupUpdateSubscriptions.jar", "192.168.0.50", "8000", "garage/g1/floor0 garage/g1/floor1 garage/g1/floor2"]
+        # start random value generation
+        floor0.vm.provision "run_client_addRecords", type: "shell", run: "never", path: "vagrantfiles/run_client.sh", args:["AddRecordsClient.jar", "192.168.0.50", "8000", "garage/g1/floor0"]
   end
 
-  config.vm.define "floor1", autostart: false do |floor1|
+  config.vm.define "floor1", autostart: true do |floor1|
         floor1.vm.box = "ubuntu/trusty64"
-        floor1.vm.network "private_network", bridge: "en0: WLAN (AirPort)"
+        floor1.vm.network "private_network", ip: "192.168.0.51", bridge: "en0: WLAN (AirPort)"
 
         floor1.vm.provision "shell", path: "vagrantfiles/build_github_repo.sh", args: ["FBase", "https://github.com/OpenFogStack/FBase"]
-        floor1.vm.provision "run_client_floor1", type: "shell", run: "always", path: "vagrantfiles/run_client.sh", args:["Registration.jar", "192.168.0.100", "8099", "/vagrant/fbase_configurations/node/floor1.json"]
         floor1.vm.provision "startup_jar", type: "shell", run: "always", path: "vagrantfiles/startup_jar.sh", args:["/home/vagrant/FBase/target/fbase-0.0.1-SNAPSHOT-jar-with-dependencies.jar", "/vagrant/fbase_configurations/node/floor1.properties", "/vagrant/logs/floor1.log"]
+        # update subscriptions
+        floor1.vm.provision "run_client_keygroupUpdateSubscriptions", type: "shell", run: "never", path: "vagrantfiles/run_client.sh", args:["KeygroupUpdateSubscriptions.jar", "192.168.0.51", "8001", "garage/g1/floor0 garage/g1/floor1 garage/g1/floor2"]
+        # start random value generation
+        floor1.vm.provision "run_client_addRecords", type: "shell", run: "never", path: "vagrantfiles/run_client.sh", args:["AddRecordsClient.jar", "192.168.0.51", "8001", "garage/g1/floor1"]
   end
 
-  config.vm.define "floor2", autostart: false do |floor2|
+  config.vm.define "floor2", autostart: true do |floor2|
         floor2.vm.box = "ubuntu/trusty64"
-        floor2.vm.network "private_network", bridge: "en0: WLAN (AirPort)"
+        floor2.vm.network "private_network", ip: "192.168.0.52", bridge: "en0: WLAN (AirPort)"
 
         floor2.vm.provision "shell", path: "vagrantfiles/build_github_repo.sh", args: ["FBase", "https://github.com/OpenFogStack/FBase"]
-        floor2.vm.provision "run_client_floor2", type: "shell", run: "always", path: "vagrantfiles/run_client.sh", args:["Registration.jar", "192.168.0.100", "8099", "/vagrant/fbase_configurations/node/floor2.json"]
         floor2.vm.provision "startup_jar", type: "shell", run: "always", path: "vagrantfiles/startup_jar.sh", args:["/home/vagrant/FBase/target/fbase-0.0.1-SNAPSHOT-jar-with-dependencies.jar", "/vagrant/fbase_configurations/node/floor2.properties", "/vagrant/logs/floor2.log"]
+        # update subscriptions
+        floor2.vm.provision "run_client_keygroupUpdateSubscriptions", type: "shell", run: "never", path: "vagrantfiles/run_client.sh", args:["KeygroupUpdateSubscriptions.jar", "192.168.0.52", "8002", "garage/g1/floor0 garage/g1/floor1 garage/g1/floor2"]
+        # start random value generation
+        floor2.vm.provision "run_client_addRecords", type: "shell", run: "never", path: "vagrantfiles/run_client.sh", args:["AddRecordsClient.jar", "192.168.0.52", "8002", "garage/g1/floor2"]
   end
 
 end

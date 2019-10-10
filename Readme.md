@@ -18,10 +18,9 @@ Requires:
 * Vagrant
 
 1. Before startup, clear logs and remove naming service data folder.
-1. Run `vagrant up` to startup the naming service and the raid node. Note, that vagrant up will pull on the first startup the latest source code from GitHub and build a new jar.
+1. Run `vagrant up` to startup the naming service, the raid node and all the floor nodes (floor0 through floor2). Note, that vagrant up will pull on the first startup the latest source code from GitHub and build a new jar.
   * The raid node vm will also compile the FBaseExampleClients jars on first startup.
   * The raid vm will use Registration.jar to register the other floor nodes at the naming service.
-1. Run `vagrant up floor0` to startup the ground level floor node. Do the same for floor1 and floor2 (you can do this in parallel).
 1. Create the keygroups (`vagrant provision raid --provision-with run_client_keygroupBootstrap`), make sure that it worked, otherwise run again.
 1. Tell every floor node to update its local keygroup config for each keygroup created (because otherwise they do not know about them, note: raid knows because of above already about keygroups): `vagrant provision floor0 --provision-with run_client_keygroupUpdateSubscriptions` (also for floor0, floor1, floor2)
 1. Start generation of records for floor nodes: `vagrant provision floor0 --provision-with run_client_addRecords` (also for floor0, floor1, floor2)

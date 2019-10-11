@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Update everything
-sudo apt-get -y upgrade
 sudo apt-get -y update
+sudo apt-get -y upgrade
 
 # Set Encoding
 sudo echo "LANG=en_US.UTF-8" >> /etc/environment
@@ -18,12 +18,7 @@ sudo apt-get -y install git
 
 ### Install java 8
 echo "INSTALLING JAVA 8"
-sudo add-apt-repository -y ppa:webupd8team/java
-sudo apt-get update
-sudo apt-get -y upgrade
-echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
-echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-sudo apt-get -y install oracle-java8-installer
+sudo apt-get -y install openjdk-8-jdk
 
 ### Install maven
 echo "INSTALLING MAVEN"

@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config|
 
   # startup instances
   config.vm.define "namingService" do |ns|
-      ns.vm.box = "ubuntu/trusty64"
+      ns.vm.box = "ubuntu/xenial64"
       ns.vm.network "private_network", ip: "192.168.0.200", bridge: "en0: WLAN (AirPort)"
 
       ns.vm.provision "shell", path: "vagrantfiles/build_github_repo.sh", args: ["FBaseNamingService", "https://github.com/OpenFogStack/FBaseNamingService.git"]
@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "raid" do |raid|
-        raid.vm.box = "ubuntu/trusty64"
+        raid.vm.box = "ubuntu/xenial64"
         raid.vm.network "private_network", ip: "192.168.0.100", bridge: "en0: WLAN (AirPort)"
 
         raid.vm.provision "shell", path: "vagrantfiles/build_github_repo.sh", args: ["FBase", "https://github.com/OpenFogStack/FBase"]
@@ -55,7 +55,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "floor0", autostart: true do |floor0|
-        floor0.vm.box = "ubuntu/trusty64"
+        floor0.vm.box = "ubuntu/xenial64"
         floor0.vm.network "private_network", ip: "192.168.0.50", bridge: "en0: WLAN (AirPort)"
 
         floor0.vm.provision "shell", path: "vagrantfiles/build_github_repo.sh", args: ["FBase", "https://github.com/OpenFogStack/FBase"]
@@ -67,7 +67,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "floor1", autostart: true do |floor1|
-        floor1.vm.box = "ubuntu/trusty64"
+        floor1.vm.box = "ubuntu/xenial64"
         floor1.vm.network "private_network", ip: "192.168.0.51", bridge: "en0: WLAN (AirPort)"
 
         floor1.vm.provision "shell", path: "vagrantfiles/build_github_repo.sh", args: ["FBase", "https://github.com/OpenFogStack/FBase"]
@@ -79,7 +79,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "floor2", autostart: true do |floor2|
-        floor2.vm.box = "ubuntu/trusty64"
+        floor2.vm.box = "ubuntu/xenial64"
         floor2.vm.network "private_network", ip: "192.168.0.52", bridge: "en0: WLAN (AirPort)"
 
         floor2.vm.provision "shell", path: "vagrantfiles/build_github_repo.sh", args: ["FBase", "https://github.com/OpenFogStack/FBase"]
